@@ -15,15 +15,22 @@ $api->version('v1', function (Router $api) {
 
         $api->post('logout', 'App\\Api\\V1\\Controllers\\LogoutController@logout');
         $api->post('refresh', 'App\\Api\\V1\\Controllers\\RefreshController@refresh');
-        $api->get('me', 'App\\Api\\V1\\Controllers\\UserController@me');
     });
 
     $api->group(['middleware' => 'jwt.auth'], function(Router $api) {
+
+        // Crud permissions
         $api->resource('permissions', 'App\\Api\\V1\\Controllers\\PermissionsController');
 
+        // Crud Roles
         $api->get('roles/create', 'App\\Api\\V1\\Controllers\\RolesController@create');
         $api->get('roles/{role}/edit', 'App\\Api\\V1\\Controllers\\RolesController@edit');
         $api->resource('roles', 'App\\Api\\V1\\Controllers\\RolesController');
+
+        // Crud Users
+        $api->get('users/create', 'App\\Api\\V1\\Controllers\\UsersController@create');
+        $api->get('users/{role}/edit', 'App\\Api\\V1\\Controllers\\UsersController@edit');
+        $api->resource('users', 'App\\Api\\V1\\Controllers\\UsersController');
 
         $api->get('protected', function() {
             return response()->json([
