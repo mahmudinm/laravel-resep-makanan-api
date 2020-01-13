@@ -6,7 +6,10 @@ use Dingo\Api\Routing\Router;
 $api = app(Router::class);
 
 $api->version('v1', function (Router $api) {
+
+    // Fungsi Auth
     $api->group(['prefix' => 'auth'], function(Router $api) {
+        
         $api->post('signup', 'App\\Api\\V1\\Controllers\\SignUpController@signUp');
         $api->post('login', 'App\\Api\\V1\\Controllers\\LoginController@login');
 
@@ -15,42 +18,31 @@ $api->version('v1', function (Router $api) {
 
         $api->post('logout', 'App\\Api\\V1\\Controllers\\LogoutController@logout');
         $api->post('refresh', 'App\\Api\\V1\\Controllers\\RefreshController@refresh');
+
     });
+
 
     $api->group(['middleware' => 'jwt.auth'], function(Router $api) {
 
-        // Crud permissions
-        $api->resource('permissions', 'App\\Api\\V1\\Controllers\\PermissionsController');
+        $api->group(['middleware' => ['role:admin']], function(Router $api) {
 
-        // Crud Roles
-        $api->get('roles/create', 'App\\Api\\V1\\Controllers\\RolesController@create');
-        $api->get('roles/{role}/edit', 'App\\Api\\V1\\Controllers\\RolesController@edit');
-        $api->resource('roles', 'App\\Api\\V1\\Controllers\\RolesController');
+            // Crud permissions
+            $api->resource('permissions', 'App\\Api\\V1\\Controllers\\PermissionsController');
 
-        // Crud Users
-        $api->get('users/create', 'App\\Api\\V1\\Controllers\\UsersController@create');
-        $api->get('users/{role}/edit', 'App\\Api\\V1\\Controllers\\UsersController@edit');
-        $api->resource('users', 'App\\Api\\V1\\Controllers\\UsersController');
+            // Crud Roles
+            $api->get('roles/create', 'App\\Api\\V1\\Controllers\\RolesController@create');
+            $api->get('roles/{role}/edit', 'App\\Api\\V1\\Controllers\\RolesController@edit');
+            $api->resource('roles', 'App\\Api\\V1\\Controllers\\RolesController');
 
-        $api->get('protected', function() {
-            return response()->json([
-                'message' => 'Access to protected resources granted! You are seeing this text as you provided the token correctly.'
-            ]);
+            // Crud Users
+            $api->get('users/create', 'App\\Api\\V1\\Controllers\\UsersController@create');
+            $api->get('users/{role}/edit', 'App\\Api\\V1\\Controllers\\UsersController@edit');
+            $api->resource('users', 'App\\Api\\V1\\Controllers\\UsersController');
+
+            // Crud Category
+            $api->resource('category', 'App\\Api\\V1\\Controllers\\CategoryController');
         });
 
-        $api->get('refresh', [
-            'middleware' => 'jwt.refresh',
-            function() {
-                return response()->json([
-                    'message' => 'By accessing this endpoint, you can refresh your access token at each request. Check out this response headers!'
-                ]);
-            }
-        ]);
     });
 
-    $api->get('hello', function() {
-        return response()->json([
-            'message' => 'This is a simple example of item returned by your APIs. Everyone can see it.'
-        ]);
-    });
 });
