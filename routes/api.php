@@ -19,6 +19,8 @@ $api->version('v1', function (Router $api) {
     });
 
     $api->group(['middleware' => 'jwt.auth'], function(Router $api) {
+        $api->resource('permissions', 'App\\Api\\V1\\Controllers\\PermissionsController');
+
         $api->get('protected', function() {
             return response()->json([
                 'message' => 'Access to protected resources granted! You are seeing this text as you provided the token correctly.'
