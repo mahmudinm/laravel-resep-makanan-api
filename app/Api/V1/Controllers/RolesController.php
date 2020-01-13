@@ -5,6 +5,9 @@ namespace App\Api\V1\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 
 class RolesController extends Controller
 {
@@ -15,7 +18,9 @@ class RolesController extends Controller
      */
     public function index()
     {
-        //
+        $roles = Role::all();
+
+        return response()->json($roles);
     }
 
     /**
@@ -25,7 +30,9 @@ class RolesController extends Controller
      */
     public function create()
     {
-        //
+        $permissions = Permission::select('id', 'name')->get();
+
+        return response()->json($permissions);        
     }
 
     /**
@@ -36,18 +43,15 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
-    {
-        //
+        $role = Role::create($request->except('permission'));
+        $permission = $request->input('permission') ? $request->input('permission') : [];
+        $role->givePermissionTo($permission);
+
+        return response()->json(['message' => 'success create data']);
     }
 
     /**
@@ -56,9 +60,12 @@ class RolesController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        $role = Role::find($id);
+        $permissions = Permission::select('id', 'name')->get();
+
+        return response()->json([$role, $permissions]);
     }
 
     /**
@@ -68,9 +75,18 @@ class RolesController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
+
+        $role = Role::find($id);
+        $role->update($request->input('permission'));
+        $permission = $request->input('permission') ? $request->input('permission') : [];
+        $role->syncPermissions($permission);
+
+        return response()->json(['message' => 'success update data']);
     }
 
     /**
@@ -79,8 +95,11 @@ class RolesController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        $role = Role::find($id);
+        $role->delete();
+
+        return response()->json(['message' => 'success delete data']);
     }
 }

@@ -21,6 +21,10 @@ $api->version('v1', function (Router $api) {
     $api->group(['middleware' => 'jwt.auth'], function(Router $api) {
         $api->resource('permissions', 'App\\Api\\V1\\Controllers\\PermissionsController');
 
+        $api->get('roles/create', 'App\\Api\\V1\\Controllers\\RolesController@create');
+        $api->get('roles/{role}/edit', 'App\\Api\\V1\\Controllers\\RolesController@edit');
+        $api->resource('roles', 'App\\Api\\V1\\Controllers\\RolesController');
+
         $api->get('protected', function() {
             return response()->json([
                 'message' => 'Access to protected resources granted! You are seeing this text as you provided the token correctly.'
