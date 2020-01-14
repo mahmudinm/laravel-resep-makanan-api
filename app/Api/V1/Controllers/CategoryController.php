@@ -29,31 +29,13 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->validate($request, [
-        //     '' => ''
-        // ])
-    }
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
+        Category::create($request->all());
+        
+        return response()->json(['message' => 'success create data']);
     }
 
     /**
@@ -63,9 +45,16 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
+
+        $category = Category::find($id);
+        $category->update($request->all());
+        
+        return response()->json(['message' => 'success update data']);
     }
 
     /**
@@ -74,8 +63,11 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        $category->delete();
+
+        return response()->json(['message' => 'success delete data']);
     }
 }
