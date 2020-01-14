@@ -13,7 +13,7 @@ class CreateRecipeIngridientTable extends Migration
      */
     public function up()
     {
-        Schema::table('recipe_ingridient', function (Blueprint $table) {
+        Schema::create('recipe_ingridient', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('recipe_id')->unsigned();
             $table->integer('ingridient_id')->unsigned();
