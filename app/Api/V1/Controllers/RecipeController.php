@@ -21,6 +21,8 @@ class RecipeController extends Controller
     public function index()
     {
         $recipes = Recipe::all();
+        $recipes->load('ingredient');
+        $recipes->load('category');
 
         return response()->json($recipes);
     }
@@ -89,8 +91,9 @@ class RecipeController extends Controller
     public function edit($id)
     {
         $recipe = Recipe::find($id);
-        $categories = Category::select('id', 'name');
-        $ingredients = Ingredient::select('id', 'name');
+        $recipe->load('ingredient');
+        $categories = Category::select('id', 'name')->get();
+        $ingredients = Ingredient::select('id', 'name')->get();
 
         return response()->json([$recipe, $categories, $ingredients]);
     }

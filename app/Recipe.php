@@ -14,4 +14,9 @@ class Recipe extends Model
     						->withPivot('quantity')
     						->withTimestamps();
     }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
+    }
 }
