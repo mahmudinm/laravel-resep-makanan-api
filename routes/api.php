@@ -43,7 +43,7 @@ $api->version('v1', function (Router $api) {
             $api->resource('category', 'App\\Api\\V1\\Controllers\\CategoryController');
 
             // Crud Category
-            $api->resource('ingridient', 'App\\Api\\V1\\Controllers\\IngridientController');
+            $api->resource('ingredient', 'App\\Api\\V1\\Controllers\\IngredientController');
         });
 
         $api->group(['middleware' => ['role:admin|staff']], function(Router $api) {
