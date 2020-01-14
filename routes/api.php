@@ -9,7 +9,7 @@ $api->version('v1', function (Router $api) {
 
     // Fungsi Auth
     $api->group(['prefix' => 'auth'], function(Router $api) {
-        
+
         $api->post('signup', 'App\\Api\\V1\\Controllers\\SignUpController@signUp');
         $api->post('login', 'App\\Api\\V1\\Controllers\\LoginController@login');
 
@@ -41,6 +41,16 @@ $api->version('v1', function (Router $api) {
 
             // Crud Category
             $api->resource('category', 'App\\Api\\V1\\Controllers\\CategoryController');
+
+            // Crud Category
+            $api->resource('ingridient', 'App\\Api\\V1\\Controllers\\IngridientController');
+        });
+
+        $api->group(['middleware' => ['role:admin|staff']], function(Router $api) {
+
+            // Crud Recipe
+            $api->resource('recipe', 'App\\Api\\V1\\Controllers\\RecipeController');
+
         });
 
     });
