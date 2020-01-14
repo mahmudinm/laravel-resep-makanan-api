@@ -13,7 +13,7 @@ class CreateRecipeIngridientTable extends Migration
      */
     public function up()
     {
-        Schema::create('recipe_ingridient', function (Blueprint $table) {
+        Schema::create('recipe_ingredient', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('recipe_id')->unsigned();
             $table->integer('ingridient_id')->unsigned();
@@ -29,6 +29,6 @@ class CreateRecipeIngridientTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('recipe_ingridient');
+        Schema::dropIfExists('recipe_ingredient');
     }
 }

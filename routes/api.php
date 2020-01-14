@@ -49,6 +49,8 @@ $api->version('v1', function (Router $api) {
         $api->group(['middleware' => ['role:admin|staff']], function(Router $api) {
 
             // Crud Recipe
+            $api->get('recipe/create', 'App\\Api\\V1\\Controllers\\RecipeController@create');
+            $api->get('recipe/{role}/edit', 'App\\Api\\V1\\Controllers\\RecipeController@edit');
             $api->resource('recipe', 'App\\Api\\V1\\Controllers\\RecipeController');
 
         });
