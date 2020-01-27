@@ -22,7 +22,7 @@ $api->version('v1', function (Router $api) {
     });
 
 
-    $api->group(['middleware' => 'jwt.auth'], function(Router $api) {
+    $api->group(['middleware' => 'jwt.auth', 'prefix' => 'dashboard'], function(Router $api) {
 
         $api->group(['middleware' => ['role:admin']], function(Router $api) {
 
