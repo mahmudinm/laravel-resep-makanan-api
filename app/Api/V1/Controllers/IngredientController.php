@@ -38,6 +38,13 @@ class IngredientController extends Controller
         return response()->json(['message' => 'success create data', 'data' => $ingridient]);
     }
 
+    public function edit($id)
+    {
+        $ingredient = Ingredient::find($id);
+        
+        return response()->json($ingredient);
+    }
+
     /**
      * Update the specified resource in storage.
      *

@@ -37,6 +37,13 @@ class PermissionsController extends Controller
         return response()->json(['message' => 'success create data', 'data' => $permission]);
     }
 
+    public function edit($id)
+    {
+        $permission = Permission::find($id);
+     
+        return response()->json($permission);        
+    }
+
     /**
      * Update the specified resource in storage.
      *

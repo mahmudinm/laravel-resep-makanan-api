@@ -27,22 +27,25 @@ $api->version('v1', function (Router $api) {
         $api->group(['middleware' => ['role:admin']], function(Router $api) {
 
             // Crud permissions
+            $api->get('permissions/{id}/edit', 'App\\Api\\V1\\Controllers\\PermissionsController@edit');
             $api->resource('permissions', 'App\\Api\\V1\\Controllers\\PermissionsController');
 
             // Crud Roles
             $api->get('roles/create', 'App\\Api\\V1\\Controllers\\RolesController@create');
-            $api->get('roles/{role}/edit', 'App\\Api\\V1\\Controllers\\RolesController@edit');
+            $api->get('roles/{id}/edit', 'App\\Api\\V1\\Controllers\\RolesController@edit');
             $api->resource('roles', 'App\\Api\\V1\\Controllers\\RolesController');
 
             // Crud Users
             $api->get('users/create', 'App\\Api\\V1\\Controllers\\UsersController@create');
-            $api->get('users/{role}/edit', 'App\\Api\\V1\\Controllers\\UsersController@edit');
+            $api->get('users/{id}/edit', 'App\\Api\\V1\\Controllers\\UsersController@edit');
             $api->resource('users', 'App\\Api\\V1\\Controllers\\UsersController');
 
             // Crud Category
+            $api->get('category/{id}/edit', 'App\\Api\\V1\\Controllers\\CategoryController@edit');
             $api->resource('category', 'App\\Api\\V1\\Controllers\\CategoryController');
 
-            // Crud Category
+            // Crud Ingredient
+            $api->get('ingredient/{id}/edit', 'App\\Api\\V1\\Controllers\\IngredientController@edit');
             $api->resource('ingredient', 'App\\Api\\V1\\Controllers\\IngredientController');
         });
 
@@ -50,7 +53,7 @@ $api->version('v1', function (Router $api) {
 
             // Crud Recipe
             $api->get('recipe/create', 'App\\Api\\V1\\Controllers\\RecipeController@create');
-            $api->get('recipe/{role}/edit', 'App\\Api\\V1\\Controllers\\RecipeController@edit');
+            $api->get('recipe/{id}/edit', 'App\\Api\\V1\\Controllers\\RecipeController@edit');
             $api->resource('recipe', 'App\\Api\\V1\\Controllers\\RecipeController');
 
         });
