@@ -51,7 +51,7 @@ class RolesController extends Controller
         $permission = $request->input('permission') ? $request->input('permission') : [];
         $role->givePermissionTo($permission);
 
-        return response()->json(['message' => 'success create data']);
+        return response()->json(['message' => 'success create data', 'data' => $role]);
     }
 
     /**
@@ -86,7 +86,7 @@ class RolesController extends Controller
         $permission = $request->input('permission') ? $request->input('permission') : [];
         $role->syncPermissions($permission);
 
-        return response()->json(['message' => 'success update data']);
+        return response()->json(['message' => 'success update data', 'data' => $role]);
     }
 
     /**
@@ -100,6 +100,6 @@ class RolesController extends Controller
         $role = Role::find($id);
         $role->delete();
 
-        return response()->json(['message' => 'success delete data']);
+        return response()->json(['message' => 'success delete data', 'data' => $role]);
     }
 }

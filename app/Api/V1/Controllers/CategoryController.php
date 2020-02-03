@@ -33,9 +33,9 @@ class CategoryController extends Controller
             'name' => 'required'
         ]);
 
-        Category::create($request->all());
+        $category = Category::create($request->all());
         
-        return response()->json(['message' => 'success create data']);
+        return response()->json(['message' => 'success create data', 'data' => $category]);
     }
 
     /**
@@ -54,7 +54,7 @@ class CategoryController extends Controller
         $category = Category::find($id);
         $category->update($request->all());
         
-        return response()->json(['message' => 'success update data']);
+        return response()->json(['message' => 'success update data', 'data' => $category]);
     }
 
     /**
@@ -68,6 +68,6 @@ class CategoryController extends Controller
         $category = Category::find($id);
         $category->delete();
 
-        return response()->json(['message' => 'success delete data']);
+        return response()->json(['message' => 'success delete data', 'data' => $category]);
     }
 }

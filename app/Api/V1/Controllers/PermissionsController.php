@@ -32,9 +32,9 @@ class PermissionsController extends Controller
             'name' => 'required'
         ]);
 
-        Permission::create($request->all()); 
+        $permission = Permission::create($request->all()); 
 
-        return response()->json(['message' => 'success create data']);
+        return response()->json(['message' => 'success create data', 'data' => $permission]);
     }
 
     /**
@@ -53,7 +53,7 @@ class PermissionsController extends Controller
         $permission = Permission::find($id);
         $permission->update($request->all());   
 
-        return response()->json(['message' => 'success update data']);        
+        return response()->json(['message' => 'success update data', 'data' => $permission]);        
     }
 
     /**
@@ -67,6 +67,6 @@ class PermissionsController extends Controller
         $permission = Permission::find($id);
         $permission->delete();
 
-        return response()->json(['message' => 'success delete data']);        
+        return response()->json(['message' => 'success delete data', 'data' => $permission]);        
     }
 }

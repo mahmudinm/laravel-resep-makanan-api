@@ -33,9 +33,9 @@ class IngredientController extends Controller
             'name' => 'required'
         ]);
 
-        Ingredient::create($request->all());
+        $ingridient = Ingredient::create($request->all());
         
-        return response()->json(['message' => 'success create data']);
+        return response()->json(['message' => 'success create data', 'data' => $ingridient]);
     }
 
     /**
@@ -54,7 +54,7 @@ class IngredientController extends Controller
         $ingredient = Ingredient::find($id);
         $ingredient->update($request->all());
         
-        return response()->json(['message' => 'success update data']);
+        return response()->json(['message' => 'success update data', 'data' => $ingredient]);
     }
 
     /**
@@ -68,6 +68,6 @@ class IngredientController extends Controller
         $ingredient = Ingredient::find($id);
         $ingredient->delete();
 
-        return response()->json(['message' => 'success delete data']);
+        return response()->json(['message' => 'success delete data', 'data' => $ingredient]);
     }
 }

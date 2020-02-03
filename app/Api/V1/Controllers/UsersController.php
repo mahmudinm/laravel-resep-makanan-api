@@ -38,7 +38,7 @@ class UsersController extends Controller
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->assignRole($roles); 
 
-        return response()->json(['message' => 'success created data']);
+        return response()->json(['message' => 'success created data', 'data' => $user]);
     }
 
     public function edit($id)
@@ -63,7 +63,7 @@ class UsersController extends Controller
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->syncRoles($roles);
 
-        return response()->json(['message' => 'success update data']);
+        return response()->json(['message' => 'success update data', 'data' => $user]);
 
     }
 
@@ -72,7 +72,7 @@ class UsersController extends Controller
         $user = User::find($id);
         $user->delete();
 
-        return response()->json(['message' => 'success delete data']);
+        return response()->json(['message' => 'success delete data', 'data' => $user]);
     }
 
 

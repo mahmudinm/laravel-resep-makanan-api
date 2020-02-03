@@ -79,7 +79,7 @@ class RecipeController extends Controller
            $recipe->ingredient()->attach($id, ['quantity' => $ingredient_quantity[$key]]);  
         }
 
-        return response()->json(['message' => 'success create data']);
+        return response()->json(['message' => 'success create data', 'data' => $recipe]);
     }
 
     /**
@@ -149,7 +149,7 @@ class RecipeController extends Controller
            $recipe->ingredient()->sync([$id => ['quantity' => $ingredient_quantity[$key]]], false);  
         }
 
-        return response()->json(['message' => 'success update data']);
+        return response()->json(['message' => 'success update data', 'data' => $recipe]);
     }
 
     /**
@@ -166,6 +166,6 @@ class RecipeController extends Controller
         $recipe->ingredient()->sync([]);
         $recipe->delete();
 
-        return response()->json(['message' => 'success delete data']);
+        return response()->json(['message' => 'success delete data', 'data' => $recipe]);
     }
 }
