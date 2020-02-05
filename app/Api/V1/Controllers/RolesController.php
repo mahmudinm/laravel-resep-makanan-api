@@ -63,9 +63,13 @@ class RolesController extends Controller
     public function edit($id)
     {
         $role = Role::find($id);
+        $role->load('permissions');
         $permissions = Permission::select('id', 'name')->get();
 
-        return response()->json([$role, $permissions]);
+        return response()->json([
+            'role' => $role, 
+            'permissions' => $permissions
+        ]);
     }
 
     /**
