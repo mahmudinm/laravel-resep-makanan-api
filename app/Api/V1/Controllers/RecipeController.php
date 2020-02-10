@@ -54,7 +54,7 @@ class RecipeController extends Controller
         // return response()->json($request->input('ingredients'));
         $this->validate($request, [
             'category_id' => 'required',
-            // 'image' => 'required',
+            'image' => 'required',
             'name' => 'required',
             'step' => 'required'
         ]);
@@ -113,7 +113,6 @@ class RecipeController extends Controller
     {
         $this->validate($request, [
             'category_id' => 'required',
-            // 'image' => 'required',
             'name' => 'required',
             'step' => 'required'
         ]);        
