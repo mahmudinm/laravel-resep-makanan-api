@@ -21,7 +21,7 @@ class RecipeController extends Controller
     public function index()
     {
         $recipes = Recipe::all();
-        $recipes->load('ingredient');
+        // $recipes->load('ingredient');
         $recipes->load('category');
 
         return response()->json($recipes);
@@ -37,7 +37,10 @@ class RecipeController extends Controller
         $categories = Category::select('id', 'name')->get();
         $ingredients = Ingredient::select('id', 'name')->get();
 
-        return response()->json([$categories, $ingredients]);
+        return response()->json([
+            'categories' => $categories, 
+            'ingredients' => $ingredients
+        ]);
     }
 
     /**
@@ -48,6 +51,7 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
+        // return response()->json($request->input('ingredients'));
         $this->validate($request, [
             'category_id' => 'required',
             // 'image' => 'required',
@@ -71,12 +75,8 @@ class RecipeController extends Controller
         $recipe->step = $request->step;
         $recipe->save();
 
-        $ingredient_id = $request->ingredient_id;
-        $ingredient_quantity = $request->ingredient_quantity;
-
-        // multiple input data untuk many to many
-        foreach ($ingredient_id as $key => $id) {
-           $recipe->ingredient()->attach($id, ['quantity' => $ingredient_quantity[$key]]);  
+        foreach (json_decode($request->ingredients, true) as $ingredient) {
+            $recipe->ingredients()->attach($ingredient['ingredient_id'], ['quantity' => $ingredient['quantity']]);
         }
 
         return response()->json(['message' => 'success create data', 'data' => $recipe]);
@@ -91,11 +91,15 @@ class RecipeController extends Controller
     public function edit($id)
     {
         $recipe = Recipe::find($id);
-        $recipe->load('ingredient');
+        $recipe->load('ingredients');
         $categories = Category::select('id', 'name')->get();
         $ingredients = Ingredient::select('id', 'name')->get();
 
-        return response()->json([$recipe, $categories, $ingredients]);
+        return response()->json([
+            'recipe' => $recipe, 
+            'categories' => $categories,
+            'ingredients' => $ingredients
+        ]);
     }
 
     /**
@@ -139,15 +143,12 @@ class RecipeController extends Controller
         $recipe->step = $request->step;
         $recipe->save();
 
-        $ingredient_id = $request->ingredient_id;
-        $ingredient_quantity = $request->ingredient_quantity;
-
-        // multiple input data untuk many to many
-        foreach ($ingredient_id as $key => $id) {
-            // false di parameter ketiga untuk tidak menghilangkan data sebelumnya
-            // https://stackoverflow.com/questions/24702640/laravel-save-update-many-to-many-relationship
-           $recipe->ingredient()->sync([$id => ['quantity' => $ingredient_quantity[$key]]], false);  
+        // multiple input data untuk update belongsToMany
+        $syncData = [];
+        foreach (json_decode($request->ingredients, true) as $ingredient) {
+            $syncData[$ingredient['ingredient_id']] = ['quantity' => $ingredient['quantity']];
         }
+        $recipe->ingredients()->sync($syncData);
 
         return response()->json(['message' => 'success update data', 'data' => $recipe]);
     }
@@ -163,7 +164,7 @@ class RecipeController extends Controller
         $recipe = Recipe::find($id);
         // mendelete data pada table Recipe Ingredient 
         // $recipe->ingredient->detach(); untuk fungsi yang ini harus ada onDelete Cascade pada migration
-        $recipe->ingredient()->sync([]);
+        $recipe->ingredients()->sync([]); // untuk mendelete data belongsToMany
         $recipe->delete();
 
         return response()->json(['message' => 'success delete data', 'data' => $recipe]);

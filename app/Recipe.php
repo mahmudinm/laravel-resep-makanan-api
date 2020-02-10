@@ -8,7 +8,7 @@ class Recipe extends Model
 {
     protected $fillable = ['category_id', 'image', 'name', 'step'];
 
-    public function ingredient()
+    public function ingredients()
     {
         return $this->belongsToMany('App\Ingredient', 'recipe_ingredient')
     						->withPivot('quantity')

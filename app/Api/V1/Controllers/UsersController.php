@@ -44,9 +44,14 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
+        $user->load('roles');
+        // $user->with('roles')->get();
         $roles = Role::select('id', 'name')->get();
 
-        return response()->json([$user, $roles]);
+        return response()->json([
+            'user' => $user, 
+            'roles' => $roles
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -59,7 +64,10 @@ class UsersController extends Controller
         ]);        
 
         $user = User::find($id);
-        $user->update($request->except('roles'));
+        if($request->input('password')) {
+            $user->update($request->except('roles'));
+        }
+        $user->update($request->except(['roles', 'password']));
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->syncRoles($roles);
 
