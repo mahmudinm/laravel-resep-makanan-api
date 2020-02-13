@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Api\V1\Controllers;
+namespace App\Api\V1\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use App\Ingredient;
+use App\Category;
 
-class IngredientController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,9 @@ class IngredientController extends Controller
      */
     public function index()
     {
-        $ingredients = Ingredient::all();
+        $categories = Category::all();
 
-        return response()->json($ingredients);
+        return response()->json($categories);
     }
 
     /**
@@ -33,23 +33,29 @@ class IngredientController extends Controller
             'name' => 'required'
         ]);
 
-        $ingridient = Ingredient::create($request->all());
+        $category = Category::create($request->all());
         
-        return response()->json(['message' => 'success create data', 'data' => $ingridient]);
+        return response()->json(['message' => 'success create data', 'data' => $category]);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
-        $ingredient = Ingredient::find($id);
+        $category = Category::find($id);
         
-        return response()->json($ingredient);
+        return response()->json($category);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Ingredient  $ingredient
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -58,23 +64,23 @@ class IngredientController extends Controller
             'name' => 'required'
         ]);
 
-        $ingredient = Ingredient::find($id);
-        $ingredient->update($request->all());
+        $category = Category::find($id);
+        $category->update($request->all());
         
-        return response()->json(['message' => 'success update data', 'data' => $ingredient]);
+        return response()->json(['message' => 'success update data', 'data' => $category]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Ingredient  $ingredient
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $ingredient = Ingredient::find($id);
-        $ingredient->delete();
+        $category = Category::find($id);
+        $category->delete();
 
-        return response()->json(['message' => 'success delete data', 'data' => $ingredient]);
+        return response()->json(['message' => 'success delete data', 'data' => $category]);
     }
 }
