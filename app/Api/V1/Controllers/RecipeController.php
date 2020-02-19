@@ -23,7 +23,7 @@ class RecipeController extends Controller
         }
 
         $query->with('category');
-        $recipes = $query->paginate(3);
+        $recipes = $query->paginate(4);
         $categories = Category::select('name', 'id')->get();
         return response()->json([
             'recipes' => $recipes,
